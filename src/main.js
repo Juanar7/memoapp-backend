@@ -16,16 +16,14 @@ app.get('/', (req, res) => {
 })
 //creamos ruta de login
 app.post('/login', async (req, res) => {
-  //validamos que traiga todos los campos
-  if (Object.keys(req.body).length < 2) {
-    return res.send('Username and password are required')
-  }
-
+ console.log("prueba");
   //destructuracion del objeto
   let { username, password } = req.body
+
   //validamos que los campos no vengan vacios
-  if (username === "" || password === "") {
-    return res.send('Username or password is empty');
+  if (!username || !password) {
+    return res.send('Username and password are required');
+    
   }
   //eliminamos los espacios del string
   username = username.replaceAll(' ', '')
