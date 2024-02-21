@@ -27,6 +27,7 @@ app.post('/login', async (req, res) => {
   }
   //eliminamos los espacios del string
   username = username.replaceAll(' ', '')
+  
   //traer los datos del usuario de la base de datos
   let userData = await getUserData(username)
   //validamos que el ususario exista en la base de datos
