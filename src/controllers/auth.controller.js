@@ -1,6 +1,8 @@
 import { getUserData } from "../services/user.service.js";
 import { validatePassword } from "../modules/auth.js";
 import { generateToken } from "../modules/token.js";
+import jwt from 'jsonwebtoken';
+import config from '../config.js';
 
 export const loginController = async (req, res) => {
   //eliminamos los espacios del string
@@ -16,9 +18,7 @@ export const loginController = async (req, res) => {
     if (userData == undefined) {
       return res.status(401).json({ message: 'username and password are incorrect', error: true });
     }
-    console.log(userData);
     const validate = await validatePassword(password, userData.password)
-    console.log(validate);
 
     if (!validate) {
       return res.status(401).json({ message: 'username and password are incorrect', error: true });
@@ -34,5 +34,17 @@ export const loginController = async (req, res) => {
 
   } catch (error) {
     return res.status(500).json({ message: error.message, error: true })
+  }
+}
+
+export const saludoController = async (req, res) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(' ')[1];
+  try {
+    const { sub } = jwt.verify(token, config.secret_jwt);
+    const user = await getUserData(sub);
+    return res.status(200).json({ message: `Hello ${user.username}`, error: false });
+  } catch (error) {
+    return res.status(500).json({ message: error.message, error: true });
   }
 }
