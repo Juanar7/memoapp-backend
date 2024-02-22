@@ -1,4 +1,6 @@
 import { getUserData } from "../services/user.service.js";
+import { validatePassword } from "../modules/auth.js";
+import { generateToken } from "../modules/token.js";
 
 export const loginController = async (req, res) => {
   //eliminamos los espacios del string
@@ -14,9 +16,19 @@ export const loginController = async (req, res) => {
     if (userData == undefined) {
       return res.status(401).json({ message: 'username and password are incorrect', error: true });
     }
+    console.log(userData);
+    const validate = await validatePassword(password, userData.password)
+    console.log(validate);
+
+    if (!validate) {
+      return res.status(401).json({ message: 'username and password are incorrect', error: true });
+    }
+
+    const token = generateToken(userData.username)
+
     //respuesta cuando el usuario existe
     return res.status(200).json({
-      message: `Hi,${userData.first_name} ${userData.last_name}`,
+      detail: { access_token: token, token_type:'Bearer'},
       error: false
     });
 
