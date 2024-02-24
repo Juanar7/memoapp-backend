@@ -1,3 +1,13 @@
+import 'dotenv/config'
+
 export default {
-    secret_jwt: "4c315f1cff98b971dddb5b5d36cefb46a6e4a2c5f73649d162081a587dfc9dce"
+    db_host: process.env.DB_HOST,
+    db_port: process.env.DB_PORT,
+    db_user: process.env.DB_USER,
+    db_password: process.env.DB_PASSWORD,
+    db_database: process.env.DB_DATABASE,
+
+    server_port: process.env.SERVER_PORT,
+    secret_jwt: process.env.SECRET_JWT
 }
+

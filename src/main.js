@@ -4,13 +4,14 @@ import bodyParser from 'body-parser';
 import { getUserData } from './services/user.service.js';
 import { authRouter } from './routes/auth.routes.js'
 import { hashPassword } from './modules/auth.js';
+import config from './config.js';
 
 // creamos una instancia de express
 const app = express();
 app.use(bodyParser.json());
 
 // definimos el puerto
-const port = 3333;
+const port = config.server_port;
 
 // definimos una ruta para el servidor
 app.get('/', async (req, res) => {
