@@ -1,24 +1,51 @@
-import { getUserDataByUsername, getUserDataByEmail } from "../services/user.service.js";
-import { validatePassword } from "../modules/auth.js";
+import { getUserDataByUsername, getUserDataByEmail, createUser } from "../services/user.service.js";
+import { hashPassword, validatePassword } from "../modules/auth.js";
 import { generateToken } from "../modules/token.js";
 import jwt from 'jsonwebtoken';
 import config from '../config.js';
 import { replaceSpace } from "../modules/validations.js";
 
-export const registerController = async (req, res)=>{
+export const registerController = async (req, res) => {
 
-  const {username, email , password , age , first_name , last_name} = req.body
+  const { username, email, password, age, first_name, last_name } = req.body
 
   const usernameSinEspacios = replaceSpace(username);
   const emailSinEspacios = replaceSpace(email);
   const passwordSinEspacios = replaceSpace(password);
   try {
     let userData = await getUserDataByUsername(usernameSinEspacios)
-    if (userData.username != undefined) {
-      return res.status(401).json({ message: 'username already in use', error: true });
+    if (userData != undefined) {
+      return res.status(401).json({ message: 'Username already in use', error: true });
     }
+
+    // Hecho por nicolas
+    let emailData = await getUserDataByEmail(emailSinEspacios)
+    if (emailData != undefined) {
+      return res.status(401).json({ message: 'Email already in use', error: true });
+    }
+
+    const hashedPassword = await hashPassword(passwordSinEspacios)
+
+
+    await createUser(usernameSinEspacios, emailSinEspacios, hashedPassword, age, first_name, last_name)
+
+    const token = generateToken(usernameSinEspacios)
+
+    return res.status(201).json({
+      detail: {
+        access_token: token,
+        token_type: 'Bearer'
+      },
+      error: false
+    });
+
+    // Hecho por nicolas
+
   } catch (error) {
-    
+    console.log(error)
+    // Hecho por nicolas
+    return res.status(500).json({ message: error.message, error: true })
+    // Hecho por nicolas
   }
 }
 
@@ -46,7 +73,7 @@ export const loginController = async (req, res) => {
 
     //respuesta cuando el usuario existe
     return res.status(200).json({
-      detail: { access_token: token, token_type:'Bearer'},
+      detail: { access_token: token, token_type: 'Bearer' },
       error: false
     });
 

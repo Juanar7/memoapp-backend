@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../config.js';
-import { getUserData } from '../services/user.service.js';
+import { getUserDataByEmail, getUserDataByUsername } from '../services/user.service.js';
 
 export const verifyToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -9,7 +9,7 @@ export const verifyToken = async (req, res, next) => {
   const token = authHeader.split(' ')[1];
   try {
     const { sub } = jwt.verify(token, config.secret_jwt);
-    const user = await getUserData(sub);
+    const user = await getUserDataByUsername(sub);
     if (!user) return res.status(401).json({ message: 'Usuario no existe', error: true });
     next();
   } catch (error) {

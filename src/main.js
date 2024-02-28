@@ -1,7 +1,6 @@
 //importamos la libreria express
 import express from 'express';
 import bodyParser from 'body-parser';
-import { getUserData } from './services/user.service.js';
 import { authRouter } from './routes/auth.routes.js'
 import { hashPassword } from './modules/auth.js';
 import config from './config.js';
