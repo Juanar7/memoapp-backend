@@ -3,7 +3,9 @@ import { conn } from "../config/db.js";
 export const getUserDataByUsername = async (username) => {
 
   try {
-    const [respuesta] = await conn.execute(`SELECT * FROM users WHERE username = '${username}'`)
+    const query = 'SELECT * FROM users WHERE username = ?';
+    const [respuesta] = await conn.execute(query,[username])
+    console.log('Respuesta del username')
     console.log(respuesta)
     return respuesta[0]
   } catch (error) {
@@ -17,7 +19,9 @@ export const getUserDataByUsername = async (username) => {
 export const getUserDataByEmail = async (email) => {
 
   try {
-    const [respuesta] = await conn.execute(`SELECT * FROM users WHERE email = '${email}'`)
+    const query = 'SELECT * FROM users WHERE email = ?';
+    const [respuesta] = await conn.execute(query,[email])
+    console.log('Respuesta del email')
     console.log(respuesta)
     return respuesta[0]
   } catch (error) {
