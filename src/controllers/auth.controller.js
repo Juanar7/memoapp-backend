@@ -5,6 +5,13 @@ import jwt from 'jsonwebtoken';
 import config from '../config.js';
 import { replaceSpace } from "../modules/validations.js";
 
+export const updateUserController = async (req , res) => {
+  console.log(req.params)
+
+const{id_user}=req.params
+const{email, first_name,last_name,age} = req.body
+
+}
 export const registerController = async (req, res) => {
 
   const { username, email, password, age, first_name, last_name } = req.body

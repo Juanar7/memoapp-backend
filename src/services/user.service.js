@@ -1,10 +1,30 @@
 import { conn } from "../config/db.js";
 
+export const updateDataUser = async (id_user, email, age, first_name, last_name) => {
+  try {
+    const nuevosDatos = {
+      email,
+      age,
+      first_name,
+      last_name
+    };
+
+    const query = 'UPDATE users SET ? WHERE id_usuario = ?';
+    await conn.execute(query, [nuevosDatos, id_user])
+
+  } catch (error) {
+    console.error('Error en updateDataUser')
+    console.log(error)
+    throw new Error('Error al consultar la base de datos')
+  }
+  }
+
+
 export const getUserDataByUsername = async (username) => {
 
   try {
     const query = 'SELECT * FROM users WHERE username = ?';
-    const [respuesta] = await conn.execute(query,[username])
+    const [respuesta] = await conn.execute(query, [username])
     console.log('Respuesta del username')
     console.log(respuesta)
     return respuesta[0]
@@ -20,7 +40,7 @@ export const getUserDataByEmail = async (email) => {
 
   try {
     const query = 'SELECT * FROM users WHERE email = ?';
-    const [respuesta] = await conn.execute(query,[email])
+    const [respuesta] = await conn.execute(query, [email])
     console.log('Respuesta del email')
     console.log(respuesta)
     return respuesta[0]

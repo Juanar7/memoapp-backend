@@ -1,7 +1,7 @@
 //importamos la libreria express
 import express from 'express';
 import bodyParser from 'body-parser';
-import { authRouter } from './routes/auth.routes.js'
+import { userRouter } from './routes/user.routes.js'
 import { hashPassword } from './modules/auth.js';
 import config from './config.js';
 
@@ -21,7 +21,7 @@ app.get('/', async (req, res) => {
 
 app.post('/register')
 
-app.use(authRouter);
+app.use(userRouter);
 
 // iniciamos el servidor
 app.listen(port, () => {
