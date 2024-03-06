@@ -1,15 +1,27 @@
-import { getUserDataByUsername, getUserDataByEmail, createUser } from "../services/user.service.js";
+import { getUserDataByUsername, getUserDataByEmail, createUser, updateDataUser } from "../services/user.service.js";
 import { hashPassword, validatePassword } from "../modules/auth.js";
 import { generateToken } from "../modules/token.js";
 import jwt from 'jsonwebtoken';
 import config from '../config.js';
 import { replaceSpace } from "../modules/validations.js";
 
-export const updateUserController = async (req , res) => {
+export const updateUserController = async (req, res) => {
   console.log(req.params)
 
-const{id_user}=req.params
-const{email, first_name,last_name,age} = req.body
+  const { id_user } = req.params
+  const { email, first_name, last_name, age } = req.body
+
+  try {
+
+    await updateDataUser(id_user, email, age, first_name, last_name)
+    return res.status(200).json({ message: 'Data was updated correctly', error: false });
+    
+  } catch (error) {
+
+    console.log(error)
+    return res.status(500).json({ message: error.message, error: true })
+
+  }
 
 }
 export const registerController = async (req, res) => {

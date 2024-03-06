@@ -9,8 +9,8 @@ export const updateDataUser = async (id_user, email, age, first_name, last_name)
       last_name
     };
 
-    const query = 'UPDATE users SET ? WHERE id_usuario = ?';
-    await conn.execute(query, [nuevosDatos, id_user])
+    const query = 'UPDATE users SET ? WHERE id_user = ?';
+    await conn.execute(query, [nuevosDatos,Number(id_user)])
 
   } catch (error) {
     console.error('Error en updateDataUser')
