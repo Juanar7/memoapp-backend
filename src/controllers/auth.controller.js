@@ -13,7 +13,7 @@ export const updateUserController = async (req, res) => {
 
   try {
 
-    await updateDataUser(id_user, email, age, first_name, last_name)
+    await updateDataUser(Number(id_user), email, age, first_name, last_name)
     return res.status(200).json({ message: 'Data was updated correctly', error: false });
     
   } catch (error) {

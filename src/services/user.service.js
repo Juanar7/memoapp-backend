@@ -2,22 +2,14 @@ import { conn } from "../config/db.js";
 
 export const updateDataUser = async (id_user, email, age, first_name, last_name) => {
   try {
-    const nuevosDatos = {
-      email,
-      age,
-      first_name,
-      last_name
-    };
-
-    const query = 'UPDATE users SET ? WHERE id_user = ?';
-    await conn.execute(query, [nuevosDatos,Number(id_user)])
+    const query = 'UPDATE users SET email = ?, age = ?, first_name = ?, last_name = ? WHERE id_user = ?';
+    await conn.execute(query, [email, age, first_name, last_name, id_user]);
 
   } catch (error) {
-    console.error('Error en updateDataUser')
-    console.log(error)
-    throw new Error('Error al consultar la base de datos')
+    console.error('Error en updateDataUser', error);
+    throw new Error('Error al consultar la base de datos');
   }
-  }
+}
 
 
 export const getUserDataByUsername = async (username) => {
